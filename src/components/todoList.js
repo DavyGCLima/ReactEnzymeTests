@@ -1,23 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+
+import { Creators } from '../store/ducks/todos';
 
 // import { Container } from './styles';
 
 export default function components() {
 
+  const dispatch = useDispatch();
+
   const [todo, setTodo] = useState('');
-  const [todoList, setTodoList] = useState([]);
+  const todos = useSelector((state) => state.todos.todos);
 
   function handleChange(event) {
     setTodo(event.target.value);
   }
 
   function handleAdd() {
-    setTodoList([...todoList, todo]);
+    dispatch(Creators.addTodo(todo));
   }
 
   return (
     <div >
-      <ul>{ todoList.map((todo, index) => (<li key={index}>{todo}</li>)) }</ul>
+      <ul>{ todos.map((todo, index) => (<li key={index}>{todo}</li>)) }</ul>
       <input type="text" name="todo" onChange={handleChange} />
       <button onClick={handleAdd}>Adicionar</button>
     </div>
